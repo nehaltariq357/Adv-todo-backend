@@ -200,17 +200,107 @@ JWT_SECRET=your_secret_key
 ✅ Login authentication working  
 ✅ JWT generation working  
 
+# 🟡 Step 3 — Auth Middleware & Protected Routes
+
+## 🎯 Goal
+
+Secure routes using JWT authentication middleware.
+
 ---
 
-# 🚀 Upcoming Features
+## 🧱 Tasks Completed
 
-- Auth Middleware
-- Protected Routes
-- Todo CRUD APIs
-- User-specific Todos
-- Validation
-- Global Error Handling
-- Refresh Tokens
-- Deployment
+### 1️⃣ Auth Middleware Created
+
+Middleware responsibilities:
+
+- Read token from request headers
+- Verify JWT token
+- Attach decoded user data to request
+- Protect private routes
+
+---
+
+### 2️⃣ Authorization Header Setup
+
+Protected routes require token in headers:
+
+```http
+Authorization: Bearer YOUR_TOKEN
+```
+
+Example:
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```
+
+---
+
+### 3️⃣ Protected Route Created
+
+Example route:
+
+```ts
+router.get("/profile", authMiddleware, (req, res) => {
+  res.json({
+    message: "Protected route accessed",
+    user: req.user,
+  });
+});
+```
+
+---
+
+## 📌 Protected Route Request
+
+### Method
+
+```http
+GET
+```
+
+### URL
+
+```http
+http://localhost:5000/api/profile
+```
+
+---
+
+## ✅ Expected Response
+
+```json
+{
+  "message": "Protected route accessed",
+  "user": {
+    "id": "664...",
+    "iat": 171000,
+    "exp": 171000
+  }
+}
+```
+
+---
+
+## ❌ Invalid Token Response
+
+```json
+{
+  "status": "fail",
+  "message": "Unauthorized"
+}
+```
+
+---
+
+## 🧠 Concepts Learned
+
+- JWT verification
+- Express middleware
+- Protected routes
+- Authorization headers
+- Request authentication
+- Token-based security
 
 ---

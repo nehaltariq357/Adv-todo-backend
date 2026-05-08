@@ -1,11 +1,14 @@
 import app from "./app"
-import connect from "./config/db"
+import connectDB from "./config/db"
 import dotenv from "dotenv"
+
 dotenv.config()
 
 const port = process.env.PORT
-connect().then(() => {
+
+connectDB().then(() => {
     app.listen(port, () => {
-        console.log(`server is running on http://localhost:${port}/api`)
+        console.log("mongoDB connected")
+        console.log(`server is running on http://localhost:${port}`)
     })
 })
