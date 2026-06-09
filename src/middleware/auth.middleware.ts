@@ -16,27 +16,39 @@ export const authMiddleware = async (
   next: NextFunction,
 ) => {
   try {
-    // get token from header // Bearer token // from client
-    const authHeader = req.headers.authorization;
+    const authHeader =  req.headers.authorization;
+    const cookiesToken = req.cookies.accessToken;
+    console.log("authHeader",authHeader)
+    console.log("cookiesToken",cookiesToken)
 
-    if (!authHeader) {
-      return res.status(401).json({
-        status: "fail",
-        message: "Authorization header is required",
-      });
+    let token: string | undefined;
+
+    // cookies token check
+    if (cookiesToken) {
+      token = cookiesToken;
     }
-    // Bearer token split
-    const token = authHeader.split(" ")[1];
+
+    // authorization header check
+    if (authHeader) {
+      token = authHeader.split(" ")[1];
+    }
+
+    console.log("token", token);
+
+
+
 
     if (!token) {
       return res.status(401).json({
         status: "fail",
-        message: "Invalid token format",
+        message: "Unauthorized",
       });
     }
 
+
+
     // verify token
-    const secret = process.env.JWT_SECRET;
+    const secret = process.env.ACCESS_TOKEN_SECRET;
     const decodeToken = jwt.verify(token, secret as string);
 
     if (!decodeToken) {
